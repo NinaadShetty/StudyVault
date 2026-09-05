@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyVault — your study dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+
+  <!-- backdrop for mobile sidebar -->
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-mark">SV</div>
+      <span class="brand-name">StudyVault</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-item active" data-view="dashboard">
+        <svg viewBox="0 0 24 24" class="nav-icon"><path d="M4 13h6V4H4v9Zm0 7h6v-5H4v5Zm10 0h6V11h-6v9Zm0-16v5h6V4h-6Z"/></svg>
+        Dashboard
+      </button>
+      <button class="nav-item" data-view="subjects">
+        <svg viewBox="0 0 24 24" class="nav-icon"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19a1 1 0 0 1 1 1v15a1 1 0 0 1-1 1H6.5a2.5 2.5 0 0 0 0 5H20M4 5.5v13A2.5 2.5 0 0 0 6.5 21"/></svg>
+        Subjects
+      </button>
+      <button class="nav-item" data-view="tasks">
+        <svg viewBox="0 0 24 24" class="nav-icon"><path d="m4 12 5 5L20 6"/></svg>
+        Tasks
+      </button>
+      <button class="nav-item" data-view="notes">
+        <svg viewBox="0 0 24 24" class="nav-icon"><path d="M4 4h13l3 3v13H4V4Z"/><path d="M17 4v3h3M8 10h8M8 14h8M8 18h5"/></svg>
+        Notes
+      </button>
+      <button class="nav-item" data-view="timer">
+        <svg viewBox="0 0 24 24" class="nav-icon"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg>
+        Timer
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      Everything here stays on this device. No accounts, no servers, no syncing.
+    </div>
+  </aside>
+
+  <!-- ============ MAIN CONTENT ============ -->
+  <main class="content">
+
+    <header class="topbar">
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+        <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+      <div class="topbar-heading">
+        <h1 id="viewTitle">Dashboard</h1>
+        <p id="viewSubtitle">A quick look at how your studying is going.</p>
+      </div>
+    </header>
+
+    <!-- ---------- DASHBOARD VIEW ---------- -->
+    <section id="view-dashboard" class="view active">
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <span class="stat-label">Today</span>
+          <span class="stat-value" id="statToday">—</span>
+        </div>
+        <div class="stat-card accent-subjects">
+          <span class="stat-label">Subjects</span>
+          <span class="stat-value" id="statSubjects">0</span>
+        </div>
+        <div class="stat-card accent-pending">
+          <span class="stat-label">Pending tasks</span>
+          <span class="stat-value" id="statPending">0</span>
+        </div>
+        <div class="stat-card accent-done">
+          <span class="stat-label">Completed tasks</span>
+          <span class="stat-value" id="statCompleted">0</span>
+        </div>
+        <div class="stat-card accent-sessions">
+          <span class="stat-label">Study sessions</span>
+          <span class="stat-value" id="statSessions">0</span>
+        </div>
+      </div>
+
+      <div class="dash-row">
+        <div class="panel progress-panel">
+          <div class="panel-header">
+            <h2>Study progress</h2>
+            <span class="muted" id="progressCaption">0 of 0 tasks done</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="progressFill" style="width:0%"></div>
+          </div>
+          <span class="progress-percent" id="progressPercent">0%</span>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <h2>Due soon</h2>
+          </div>
+          <ul class="mini-list" id="dueSoonList">
+            <li class="empty-hint">Nothing on the horizon. Add a task to get started.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- SUBJECTS VIEW ---------- -->
+    <section id="view-subjects" class="view">
+      <div class="view-toolbar">
+        <button class="btn btn-primary" id="openAddSubject">+ Add subject</button>
+      </div>
+      <div class="card-grid" id="subjectGrid">
+        <!-- subject cards injected here -->
+      </div>
+    </section>
+
+    <!-- ---------- TASKS VIEW ---------- -->
+    <section id="view-tasks" class="view">
+      <div class="view-toolbar">
+        <button class="btn btn-primary" id="openAddTask">+ Add task</button>
+
+        <div class="toolbar-controls">
+          <div class="segmented" id="taskFilter">
+            <button class="segmented-btn active" data-filter="all">All</button>
+            <button class="segmented-btn" data-filter="pending">Pending</button>
+            <button class="segmented-btn" data-filter="completed">Completed</button>
+          </div>
+
+          <select class="select" id="taskSort">
+            <option value="dueDate">Sort by due date</option>
+            <option value="priority">Sort by priority</option>
+          </select>
+        </div>
+      </div>
+
+      <ul class="task-list" id="taskList">
+        <!-- task rows injected here -->
+      </ul>
+    </section>
+
+    <!-- ---------- NOTES VIEW ---------- -->
+    <section id="view-notes" class="view">
+      <div class="view-toolbar">
+        <button class="btn btn-primary" id="openAddNote">+ New note</button>
+        <input type="text" class="text-input search-input" id="noteSearch" placeholder="Search notes…">
+      </div>
+      <div class="card-grid" id="noteGrid">
+        <!-- note cards injected here -->
+      </div>
+    </section>
+
+    <!-- ---------- TIMER VIEW ---------- -->
+    <section id="view-timer" class="view">
+      <div class="timer-wrap">
+        <div class="timer-mode" id="timerMode">Focus session</div>
+        <div class="timer-face">
+          <svg viewBox="0 0 200 200" class="timer-ring">
+            <circle cx="100" cy="100" r="90" class="timer-ring-track"></circle>
+            <circle cx="100" cy="100" r="90" class="timer-ring-progress" id="timerRingProgress"></circle>
+          </svg>
+          <span class="timer-time" id="timerDisplay">25:00</span>
+        </div>
+
+        <div class="timer-buttons">
+          <button class="btn btn-primary" id="timerStart">Start</button>
+          <button class="btn btn-ghost" id="timerPause" disabled>Pause</button>
+          <button class="btn btn-ghost" id="timerReset">Reset</button>
+        </div>
+
+        <div class="timer-settings">
+          <label>Focus
+            <input type="number" id="focusLength" min="1" max="180" value="25"> min
+          </label>
+          <label>Break
+            <input type="number" id="breakLength" min="1" max="60" value="5"> min
+          </label>
+        </div>
+
+        <p class="muted timer-hint" id="timerHint">Finish a focus session and it's logged automatically.</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ============ MODAL: ADD SUBJECT ============ -->
+<div class="modal-overlay" id="subjectModal">
+  <div class="modal">
+    <h2>Add subject</h2>
+    <form id="subjectForm">
+      <label class="field">
+        <span>Subject name</span>
+        <input type="text" id="subjectName" class="text-input" placeholder="e.g. Organic Chemistry" required>
+      </label>
+      <label class="field">
+        <span>Color</span>
+        <div class="color-row" id="colorRow"></div>
+        <input type="hidden" id="subjectColor" value="#e8a33d">
+      </label>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close-modal>Cancel</button>
+        <button type="submit" class="btn btn-primary">Add subject</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ============ MODAL: ADD TASK ============ -->
+<div class="modal-overlay" id="taskModal">
+  <div class="modal">
+    <h2>Add task</h2>
+    <form id="taskForm">
+      <label class="field">
+        <span>Task title</span>
+        <input type="text" id="taskTitle" class="text-input" placeholder="e.g. Finish problem set 3" required>
+      </label>
+      <label class="field">
+        <span>Subject</span>
+        <select id="taskSubject" class="select"></select>
+      </label>
+      <label class="field">
+        <span>Priority</span>
+        <select id="taskPriority" class="select">
+          <option value="low">Low</option>
+          <option value="medium" selected>Medium</option>
+          <option value="high">High</option>
+        </select>
+      </label>
+      <label class="field">
+        <span>Due date</span>
+        <input type="date" id="taskDueDate" class="text-input">
+      </label>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close-modal>Cancel</button>
+        <button type="submit" class="btn btn-primary">Add task</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ============ MODAL: ADD / EDIT NOTE ============ -->
+<div class="modal-overlay" id="noteModal">
+  <div class="modal">
+    <h2 id="noteModalTitle">New note</h2>
+    <form id="noteForm">
+      <input type="hidden" id="noteId">
+      <label class="field">
+        <span>Title</span>
+        <input type="text" id="noteTitle" class="text-input" placeholder="e.g. Key formulas" required>
+      </label>
+      <label class="field">
+        <span>Note</span>
+        <textarea id="noteContent" class="text-input note-textarea" rows="6" placeholder="Write your note here…"></textarea>
+      </label>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" data-close-modal>Cancel</button>
+        <button type="submit" class="btn btn-primary" id="noteSubmitBtn">Save note</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- toast for small confirmations -->
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
